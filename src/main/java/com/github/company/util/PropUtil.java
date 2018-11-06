@@ -24,7 +24,7 @@ public class PropUtil {
         if ((result = PROPERTIES.getProperty(property)) == null) {
             String error = String.format("not found property '%s'", property);
             LOGGER.fatal(error);
-            throw new ExceptionInInitializerError(error);
+            throw new RuntimeException(error);
         }
         return result;
     }

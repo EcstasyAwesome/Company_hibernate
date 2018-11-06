@@ -12,42 +12,42 @@ import java.util.Set;
 
 public class SecurityImpl implements Security {
 
-    public static final int GUEST = 1;
-    public static final int USER = 2;
-    public static final int ADMIN = 3;
-
-    private Map<String, Integer> links = new HashMap<>();
-    private Set<String> resources = new HashSet<>();
-
+    private static final Map<String, Integer> links = new HashMap<>();
+    private static final Set<String> resources = new HashSet<>();
     private static SecurityImpl instance = new SecurityImpl();
-
-    private SecurityImpl() {
-    }
 
     public static SecurityImpl getInstance() {
         return instance;
     }
 
-    @Override
-    public Security configureIndexPage(int access) {
-        links.put("/", access);
-        return this;
+    private SecurityImpl() {
     }
 
-    @Override
-    public Security configureServlet(@NotNull Class<?> annotatedClass, int access) {
-        if (annotatedClass.isAnnotationPresent(WebServlet.class)) {
-            for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
-                links.put(url, access);
-            }
+    public static class Configurator {
+
+        public Configurator(int indexPageAccess) {
+            links.put("/", indexPageAccess);
+            System.out.println("def configurator");
         }
-        return this;
-    }
 
-    @Override
-    public Security configureResource(@NotNull String resourceRootFolder) {
-        if (resourceRootFolder.matches("^/\\w+/$")) resources.add(resourceRootFolder);
-        return this;
+        public Configurator configureServlet(@NotNull Class<?> annotatedClass, int access) throws IllegalArgumentException {
+            if (annotatedClass.isAnnotationPresent(WebServlet.class)) {
+                for (String url : annotatedClass.getAnnotation(WebServlet.class).urlPatterns()) {
+                    links.put(url, access);
+                }
+            } else throw new IllegalArgumentException("Only annotated classes are supported");
+            return this;
+        }
+
+        public Configurator configureResource(@NotNull String resourceRootFolder) throws IllegalArgumentException {
+            if (resourceRootFolder.matches("^/\\w+/$")) resources.add(resourceRootFolder);
+            else throw new IllegalArgumentException("Incorrect path");
+            return this;
+        }
+
+        public Security configure() {
+            return getInstance();
+        }
     }
 
     @Override

@@ -10,12 +10,9 @@ public interface Security {
     int UNAUTHORIZED = 2;
     int FORBIDDEN = 3;
     int NOT_FOUND = 4;
-
-    Security configureIndexPage(int access);
-
-    Security configureServlet(@NotNull Class<?> annotatedClass, int access);
-
-    Security configureResource(@NotNull String resourceRootFolder);
+    int GUEST = 1;
+    int USER = 2;
+    int ADMIN = 3;
 
     int verify(@Nullable User user, @NotNull String link);
 }

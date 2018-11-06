@@ -11,7 +11,7 @@
               minIdle="5"/>
     <Resources>
         <PostResources className="org.apache.catalina.webresources.DirResourceSet"
-                       base="/Users/EcstasyAwesome/IdeaProjects/Company/storage"
+                       base="/Users/EcstasyAwesome/IdeaProjects/Company_hibernate/storage"
                        webAppMount="/storage"/>
     </Resources>
 </Context>

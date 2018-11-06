@@ -2,7 +2,7 @@ package com.github.company.dao.impl;
 
 import com.github.company.dao.model.PositionDao;
 import com.github.company.dao.entity.Position;
-import com.github.company.util.HibernateUtil;
+import com.github.company.database.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
